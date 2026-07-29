@@ -8,3 +8,8 @@ class Application(SQLModel, table=True):
     role_title: str
     status: str = "applied"
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class ApplicationCreate(SQLModel):
+    company: str
+    role_title: str
+    status: str = "applied"
