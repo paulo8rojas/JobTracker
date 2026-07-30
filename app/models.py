@@ -13,3 +13,8 @@ class ApplicationCreate(SQLModel):
     company: str
     role_title: str
     status: str = "applied"
+
+class ApplicationUpdate(SQLModel):
+    company: Optional[str] = None
+    role_title: Optional[str] = None
+    status: Optional[str] = None

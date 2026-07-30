@@ -1,8 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from sqlmodel import Session, select
 
 from app.database import engine, create_db_and_tables
-from app.models import Application, ApplicationCreate
+from app.models import Application, ApplicationUpdate, ApplicationCreate
 
 app = FastAPI(title="Job Application Tracker")
 
@@ -23,3 +23,21 @@ def create_application(payload: ApplicationCreate):
         session.commit()
         session.refresh(new_app)
         return new_app
+
+@app.patch("/applications/{id}")
+def update_application(id: int, payload: ApplicationUpdate):
+    with Session(engine) as session:
+        existing = session.get(Application, id)
+
+        if existing is None:
+            raise HTTPException(status_code=404, detail="Application not found")
+        
+        update_data = payload.dict(exclude_unset=True)
+
+        for key, value in update_data.items():
+            setattr(existing, key, value)
+        
+        session.add(existing)
+        session.commit()
+        session.refresh(existing)
+        return existing
