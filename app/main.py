@@ -41,3 +41,14 @@ def update_application(id: int, payload: ApplicationUpdate):
         session.commit()
         session.refresh(existing)
         return existing
+
+@app.delete("/applications/{id}", status_code=204)
+def delete_application(id: int):
+    with Session(engine) as session:
+        to_delete = session.get(Application, id)
+
+        if to_delete is None:
+            raise HTTPException(status_code=404, detail="Application not found")
+        
+        session.delete(to_delete)
+        session.commit()
