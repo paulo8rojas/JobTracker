@@ -15,7 +15,7 @@ def list_applications():
     with Session(engine) as session:
         return session.exec(select(Application)).all()
 
-@app.post("/applications")
+@app.post("/applications", status_code=201)
 def create_application(payload: ApplicationCreate):
     new_app = Application(company=payload.company, role_title=payload.role_title, status=payload.status)
     with Session(engine) as session:
