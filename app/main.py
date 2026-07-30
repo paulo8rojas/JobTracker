@@ -15,6 +15,16 @@ def list_applications():
     with Session(engine) as session:
         return session.exec(select(Application)).all()
 
+@app.get("/applications/{id}")
+def get_application(id: int):
+    with Session(engine) as session:
+        application = session.get(Application, id)
+
+        if application is None:
+            raise HTTPException(status_code=404, detail="Application not found")
+
+        return application
+
 @app.post("/applications", status_code=201)
 def create_application(payload: ApplicationCreate):
     new_app = Application(company=payload.company, role_title=payload.role_title, status=payload.status)
