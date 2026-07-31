@@ -8,7 +8,8 @@ search.
 
 🚧 In development. Backend skeleton is up and running (FastAPI + SQLModel +
 SQLite), with `GET /applications` working end-to-end. Create/update/delete
-endpoints, tests, and the frontend are in progress.
+endpoints are now also working end-to-end. Testing for endpoints are written
+and passing, frontend in progress.
 
 ## Tech stack
 
