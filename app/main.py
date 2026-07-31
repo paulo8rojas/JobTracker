@@ -4,7 +4,16 @@ from sqlmodel import Session, select
 from app.database import engine, create_db_and_tables
 from app.models import Application, ApplicationUpdate, ApplicationCreate
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(title="Job Application Tracker")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 def on_startup():
