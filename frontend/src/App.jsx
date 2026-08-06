@@ -36,13 +36,43 @@ function App() {
       })
   }
 
+  async function handleStatusChange(targetId, newStatus) {
+
+    const response = await fetch(`http://localhost:8000/applications/${targetId}`, {
+      method: "PATCH",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({"status": newStatus})
+    });
+    const data = await response.json();
+
+    const updatedApplications = applications.map((app) => {
+      if (app.id === targetId) {
+        return data
+      }
+
+      return app
+    });
+
+    setApplications(updatedApplications);
+  }
+
   return (
     <div>
       <h1>Job Application Tracker</h1>
 
       <ul>
         {applications.map((app) => (
-          <li key= {app.id}>{app.company} - {app.role_title}</li>
+          <li key= {app.id}>{app.company} - {app.role_title} - 
+          <select 
+            value={app.status} 
+            onChange={(e) => handleStatusChange(app.id,e.target.value)}
+          >
+            <option value="applied">Applied</option>
+            <option value="interviewing">Interviewing</option>
+            <option value="offer">Offer</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          </li>
         ))}
       </ul>
 
