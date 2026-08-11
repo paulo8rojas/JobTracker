@@ -56,6 +56,16 @@ function App() {
     setApplications(updatedApplications);
   }
 
+  async function handleDelete(targetId) {
+    const response = await fetch (`http://localhost:8000/applications/${targetId}`, {
+      method: "DELETE"
+    });
+
+    const updatedApplications = applications.filter((app) => app.id != targetId);
+
+    setApplications(updatedApplications);
+  }
+
   return (
     <div>
       <h1>Job Application Tracker</h1>
@@ -63,6 +73,7 @@ function App() {
       <ul>
         {applications.map((app) => (
           <li key= {app.id}>{app.company} - {app.role_title} - 
+
           <select 
             value={app.status} 
             onChange={(e) => handleStatusChange(app.id,e.target.value)}
@@ -72,6 +83,8 @@ function App() {
             <option value="offer">Offer</option>
             <option value="rejected">Rejected</option>
           </select>
+
+          <button onClick={() => handleDelete(app.id)}>🗑</button>
           </li>
         ))}
       </ul>
